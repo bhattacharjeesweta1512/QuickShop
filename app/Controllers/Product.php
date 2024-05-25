@@ -38,10 +38,7 @@ class Product extends Controller
                 "color" => $this->request->getVar('color'),
                 "size" => $this->request->getVar('size'),
             ];
-            echo "<prE>";
-            print_r($data);
-            echo "</prE>";
-            die();
+           
             // If validation passes, proceed with storing the product
             // Logic to store the product in the database
             // Redirect to a success page or display a success message
