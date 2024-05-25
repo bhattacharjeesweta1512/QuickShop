@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class ProductModel extends Model
 {
-    protected $table            = 'products';
+    protected $table            = 'product';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
@@ -39,4 +39,17 @@ class ProductModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function insert_data($data){
+       return  $rs = $this->insert($data);
+    }
+    public function isNameExists($name)
+    {
+        return $this->where('name', $name)->countAllResults() > 0;
+    }
+    public function fetch_all()
+    {
+        return $this->select('*')->orderBy('id', 'DESC')->findAll();
+    }
+   
 }

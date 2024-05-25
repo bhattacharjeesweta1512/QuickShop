@@ -96,10 +96,10 @@ input[type=submit]:hover {
  
   <div class="row">
     <div class="col-25">
-      <label for="color">Color</label>
+      <label for="brand">Brand</label>
     </div>
     <div class="col-75">
-    <input type="text" id="color" name="color" placeholder="Enter the color ..">
+    <input type="text" id="brand" name="brand" placeholder="Enter the color ..">
     </div>
   </div>
   <div class="row">
@@ -118,12 +118,48 @@ input[type=submit]:hover {
   
 </div>
 
+
+<style>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {background-color: #f2f2f2;}
+</style>
+<div style="overflow-x: auto;">
+<table id="product-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Brand</th>
+            <th>Size</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Table rows will be dynamically added here -->
+    </tbody>
+</table>
+
 </body>
 </html>
 
 <!-- added jquery to send it to database  -->
 <!-- Add jQuery library (if not already included) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Add SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+
+<!-- Add SweetAlert JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 $(document).ready(function() {
     $('#product-form').submit(function(e) {
@@ -142,17 +178,70 @@ $(document).ready(function() {
             success: function(response) {
                 // Handle success response
                 console.log(response);
-                alert('Product added successfully!');
+                if(response.status == 1){
+                    Swal.fire({
+                    title: 'Congratulations',
+                    text: response.message,
+                    icon: 'success',
+                    
+                })
+                fetchProducts();
+                }else{
+                    Swal.fire({
+                    title: 'Sorry',
+                    text: response.message,
+                    icon: 'warning',
+                    
+                })
+              
+
+                }
+                
             },
-            error: function(xhr, status, error) {
-                // Handle error response
-                console.error(xhr.responseText);
-                $('#form-errors').html(xhr.responseText);
-            }
+           
         });
     });
+
+
+   
+    
+    // Function to fetch products via AJAX and update table
+function fetchProducts() {
+   
+    
+    $.ajax({
+        url: 'getProducts',
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            // Clear existing table data
+            $('#product-table tbody').empty();
+
+            // Loop through fetched products and append rows to table
+            $.each(response, function(index, product) {
+                var row = '<tr>' +
+                            '<td>' + product.id + '</td>' +
+                            '<td>' + product.name + '</td>' +
+                            '<td>' + product.description + '</td>' +
+                            '<td>' + product.brand + '</td>' +
+                            '<td>' + product.size + '</td>' +
+                          '</tr>';
+                $('#product-table tbody').append(row);
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+            // Handle error
+        }
+    });
+     
+    }
 });
+
+    // Call fetchProducts function to load products on page load
+    
 </script>
+
 
 
 
