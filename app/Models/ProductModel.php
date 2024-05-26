@@ -12,7 +12,7 @@ class ProductModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['name', 'description','brand','size','doc','dou'];
+    protected $allowedFields    = ['name', 'description','brand','size','doc','dou','username'];
 
     protected bool $allowEmptyInserts = false;
 
@@ -51,5 +51,27 @@ class ProductModel extends Model
     {
         return $this->select('*')->orderBy('id', 'DESC')->findAll();
     }
-   
+    public function find_product($productId)
+    {
+       return  $this->find($productId);
+    }
+    public function update_product($data,$id)
+    {
+       
+        if (!empty($data)) {
+            // Perform the update operation
+            return $rs = $this->set($data)->where('id', $id)->update();
+        } else {
+            // Return an error message or handle the empty data case accordingly
+            return "No data provided for update";
+        }
+       
+    }
+    public function delete_data($id)
+    {
+     
+     return $rs = $this->where("id",$id)->delete();
+    
+       
+    }
 }

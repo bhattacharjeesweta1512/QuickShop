@@ -99,4 +99,12 @@ class Session extends BaseConfig
      * DB Group for the database session.
      */
     public ?string $DBGroup = null;
+    public $sessionDriver            = 'CodeIgniter\Session\Handlers\FileHandler';
+public $sessionCookieName        = 'ci_session';
+public $sessionExpiration        = 7200; // Session expiration time in seconds (adjust as needed)
+public $sessionSavePath          = WRITEPATH . 'session';
+public $sessionMatchIP           = true; // Match user's IP address to the session
+public $sessionTimeToUpdate      = 300; // Time interval for updating session ID
+public $sessionRegenerateDestroy = false; // Regenerate session ID on login
+
 }
